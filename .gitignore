@@ -1,0 +1,38 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# System / IDE
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Python venv
+.venv/
+env/
+venv/
+
+# Playwright / browsers
+.playwright/
+playwright-report/
+
+# Build / output
+dist/
+build/
+coverage/
+
+# Video / large media (do not commit large videos)
+videos/
+*.mp4
+*.webm
+
+# Secrets
+.env
+.env.local
+
+# OS
+Thumbs.db

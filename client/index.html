@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>T5 Desk Assistant Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    .card { border: 1px solid #ddd; padding: 1rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>T5 Desk Assistant — Demo</h1>
+  <div class="card">
+    <h3>Schedule</h3>
+    <div id="schedule">Loading…</div>
+    <button id="ask-schedule">Ask: "What's my schedule?"</button>
+  </div>
+
+  <div class="card">
+    <h3>Health</h3>
+    <div id="health">Loading…</div>
+    <button id="ask-health">Ask: "Do I need a break?"</button>
+  </div>
+
+  <div class="card">
+    <h3>Device Control (Tuya)</h3>
+    <button id="toggle-light">Toggle Desk Light</button>
+    <div id="tuya-log"></div>
+  </div>
+
+  <script>
+    document.getElementById('ask-schedule').onclick = async () => {
+      const res = await fetch('/api/schedule');
+      const json = await res.json();
+      document.getElementById('schedule').innerText = json.next.time + ' — ' + json.next.title;
+      speak('You have a ' + json.next.title + ' at ' + json.next.time + '.');
+    };
+
+    document.getElementById('ask-health').onclick = async () => {
+      const res = await fetch('/api/health');
+      const json = await res.json();
+      document.getElementById('health').innerText = json.message;
+      speak(json.message);
+    };
+
+    document.getElementById('toggle-light').onclick = async () => {
+      const res = await fetch('/api/tuya/command', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ command: 'toggle_light' })
+      });
+      const json = await res.json();
+      document.getElementById('tuya-log').innerText = 'Sent: ' + JSON.stringify(json.command);
+    };
+
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const u = new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.speak(u);
+      }
+    }
+  </script>
+</body>
+</html>
