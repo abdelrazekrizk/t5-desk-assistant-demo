@@ -1,3 +1,11 @@
+#Ignore vscode AI rules
+.github\instructions\*.md
+
+.fake
+
+#Ignore codacy - vscode AI rules
+.github\instructions\codacy.instructions.md
+
 # Node
 node_modules/
 npm-debug.log*

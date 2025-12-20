@@ -1,0 +1,34 @@
+name: Demo CI
+
+on:
+  push:
+    paths:
+      - 't5-desk-assistant-demo/**'
+  pull_request:
+    paths:
+      - 't5-desk-assistant-demo/**'
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install server dependencies
+        working-directory: t5-desk-assistant-demo/server
+        run: npm ci
+      - name: Run smoke tests
+        working-directory: t5-desk-assistant-demo/server
+        run: node run_and_test_server.js
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: smoke-test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: |
+          docker build -t t5-desk-assistant:ci t5-desk-assistant-demo/server
+          docker images | grep t5-desk-assistant || true
