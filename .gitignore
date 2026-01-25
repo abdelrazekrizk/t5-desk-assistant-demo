@@ -6,6 +6,9 @@
 #Ignore codacy - vscode AI rules
 .github\instructions\codacy.instructions.md
 
+#Ignore TEMP
+/temp
+
 # Node
 node_modules/
 npm-debug.log*
